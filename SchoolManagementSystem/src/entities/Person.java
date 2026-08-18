@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class Person {
     private Integer id;
     private String firstName, lastName,dateOfBirth, gender;
@@ -77,4 +79,32 @@ public class Person {
     public String getFullName(){
         return getFirstName()+" "+getLastName();
     }
+
+    public boolean isAdult(){
+        return (age>=18);
+    }
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", nationalID=" + nationalID +
+                ", age=" + age +
+                ", activeStatus=" + activeStatus +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Person person)) return false;
+        return Objects.equals(id, person.id);
+    }
+
+
 }
