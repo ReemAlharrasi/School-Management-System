@@ -42,4 +42,33 @@ public class CourseRecord {
     public void setRemarks(String remarks) {this.remarks = remarks;}
     public void setNotes(String notes) {this.notes = notes;}
     public void setFinalized(boolean finalized) {isFinalized = finalized;}
+
+    //methods
+    public void displayInfo(){
+        System.out.println("----- Course Record -----");
+        System.out.println("Record id : " + recordId);
+        System.out.println("Student   : " + studentId);
+        System.out.println("Teacher   : " + teacherId);
+        System.out.println("Term      : " + term);
+        System.out.println("Grade     : " + grade);
+        System.out.println("Remarks   : " + remarks);
+        System.out.println("Notes     : " + notes);
+        System.out.println("Finalized : " + isFinalized);
+    }
+
+    public void appendNote(String note){
+        if (note.isBlank()) {
+            return;
+        }
+        if (getNotes().isEmpty()) {
+            setNotes(note);
+        } else {
+            setNotes(getNotes()+" | "+note);
+        }
+    }
+
+    public void finalizeRecord(){
+        setFinalized(true);
+    }
+
 }
