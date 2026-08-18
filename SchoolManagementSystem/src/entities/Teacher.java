@@ -61,4 +61,44 @@ public class Teacher extends Person{
         System.out.println("Form teacher: " + isFormTeacher);
         System.out.println("Slots       : " + slotCount + ", classes: " + classCount);
     }
+
+    public void addSlot(String slot){
+        if (slot.isBlank()){
+            System.out.println("Rejected: slot cannot be empty.");
+            return;
+        }
+        if (slotCount >= timeSlots.length) {
+            System.out.println("Rejected: slot list is full.");
+            return;
+        }
+        timeSlots[slotCount] = slot;
+        slotCount = slotCount + 1;
+    }
+
+    public void removeSlot(String slot){
+        int found = -1;
+        for (int i = 0; i < slotCount; i++) {
+            if (timeSlots[i].equalsIgnoreCase(slot)) {
+                found = i;
+                break;
+            }
+        }
+        if (found == -1) {
+            System.out.println("Slot not found: " + slot);
+            return;
+        }
+        for (int i = found; i < slotCount - 1; i++) {
+            timeSlots[i] = timeSlots[i + 1];
+        }
+        slotCount = slotCount - 1;
+    }
+
+    public boolean hasSlot(String slot){
+        for (int i = 0; i < slotCount; i++) {
+            if (timeSlots[i].equalsIgnoreCase(slot)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
