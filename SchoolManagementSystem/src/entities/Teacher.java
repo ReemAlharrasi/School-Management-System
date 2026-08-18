@@ -50,4 +50,15 @@ public class Teacher extends Person{
     public String[] getAssignedClassIds() {return assignedClassIds;}
     public int getClassCount() {return classCount;}
     public boolean isFormTeacher() {return isFormTeacher;}
+
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("[Teacher details]");
+        System.out.println("Subject     : " + subject);
+        System.out.println("Experience  : " + experienceYears + " years");
+        System.out.println("Salary      : " + salary);
+        System.out.println("Form teacher: " + isFormTeacher);
+        System.out.println("Slots       : " + slotCount + ", classes: " + classCount);
+    }
 }
