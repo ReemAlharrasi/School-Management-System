@@ -101,4 +101,29 @@ public class Teacher extends Person{
         }
         return false;
     }
+
+    public void assignClass(String classId){
+        if (classId.isBlank()){
+            System.out.println("Rejected: class id cannot be empty.");
+            return;
+        }
+        if (classCount >= assignedClassIds.length) {
+            System.out.println("Rejected: class list is full.");
+            return;
+        }
+        assignedClassIds[classCount] = classId;
+        classCount = classCount + 1;
+    }
+
+    public int getClassLoad(){
+        return classCount;
+    }
+
+    public void raiseSalary(double amount){
+        if (amount<0){
+            System.out.println("Rejected: raise amount cannot be negative.");
+            return;
+        }
+        setSalary(getSalary()+amount);
+    }
 }
