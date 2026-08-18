@@ -52,4 +52,37 @@ public class Student extends Person{
         System.out.println("Fee balance: "+getFeeBalance());
         System.out.println("Scholarship: "+isScholarship());
     }
+
+    public void addSubject(String subject){
+        if (hasSubject(subject)){
+            System.out.println("Student already enrolled in subject");
+            return;
+        }
+        if (enrolledSubjects == null || enrolledSubjects.length==0){
+            enrolledSubjects= new String[1];
+            enrolledSubjects[0]=subject;
+        } else {
+            //initialize replacement list
+            String[] newEnrolledSubjects = new String[enrolledSubjects.length+1];
+
+            //add prev items
+            for (int i=0;i<enrolledSubjects.length;i++){
+                newEnrolledSubjects[i]=enrolledSubjects[i];
+            }
+
+            //add new item
+            newEnrolledSubjects[enrolledSubjects.length+1]=subject;
+
+            //replace old with new
+            enrolledSubjects=newEnrolledSubjects;
+
+            System.out.println("Subject added.");
+        }
+    }
+
+    public boolean hasSubject(String subject){
+        if (enrolledSubjects == null || enrolledSubjects.length==0) return false;
+        for (String sub:enrolledSubjects) if (sub.equals(subject)) return true;
+        return false;
+    }
 }
