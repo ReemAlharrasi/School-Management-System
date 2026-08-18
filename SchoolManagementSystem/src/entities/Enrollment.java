@@ -38,5 +38,23 @@ public class Enrollment {
     public void setStatus(String status) {this.status = status;}
     public void setReason(String reason) {this.reason = reason;}
     public void setRepeat(boolean repeat) {isRepeat = repeat;}
-    
+
+    //methods
+    public void displayInfo(){
+        System.out.println("----- Enrollment -----");
+        System.out.println("Enrollment id: " + enrollmentId);
+        System.out.println("Student      : " + studentId);
+        System.out.println("Course       : " + courseId);
+        System.out.println("Date         : " + enrollDate);
+        System.out.println("Status       : " + status);
+        System.out.println("Reason       : " + reason);
+        System.out.println("Repeat       : " + isRepeat);
+    }
+
+    public void cancel(){
+        setStatus("Cancelled");
+    }
+    public void complete(){
+        setStatus("Completed");
+    }
 }
