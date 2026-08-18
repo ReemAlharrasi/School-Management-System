@@ -5,16 +5,19 @@ public class Student extends Person{
     String[] enrolledSubjects, recordIDs;
     private double feeBalance;
     private boolean isScholarship;
+    private int subjectCount,recordCount;
 
     //constructor
-    public Student(Integer id, String firstName, String lastName, String dateOfBirth, String gender, Integer phoneNumber, String email, String address, Integer nationalID, Integer age, boolean activeStatus, String gradeLevel, String enrollmentDate, String[] enrolledSubjects, String[] recordIDs, double feeBalance, boolean isScholarship) {
+    public Student(Integer id, String firstName, String lastName, String dateOfBirth, String gender, Integer phoneNumber, String email, String address, Integer nationalID, Integer age, boolean activeStatus, String gradeLevel, String enrollmentDate, double feeBalance, boolean isScholarship) {
         super(id, firstName, lastName, dateOfBirth, gender, phoneNumber, email, address, nationalID, age, activeStatus);
-        this.gradeLevel = gradeLevel;
-        this.enrollmentDate = enrollmentDate;
-        this.enrolledSubjects = enrolledSubjects;
-        this.recordIDs = recordIDs;
-        this.feeBalance = feeBalance;
-        this.isScholarship = isScholarship;
+        setGradeLevel(gradeLevel);
+        setEnrollmentDate(enrollmentDate);
+        enrolledSubjects = new String[10];
+        recordIDs = new String[10];
+        setFeeBalance(feeBalance);
+        setScholarship(isScholarship);
+        subjectCount=0;
+        recordCount=0;
     }
 
     //getters
@@ -24,6 +27,7 @@ public class Student extends Person{
     public String[] getRecordIDs() {return recordIDs;}
     public double getFeeBalance() {return feeBalance;}
     public boolean isScholarship() {return isScholarship;}
+    public int getRecordCount(){return recordCount;}
 
     //setters
     public void setGradeLevel(String gradeLevel) {this.gradeLevel = gradeLevel;}
@@ -32,57 +36,63 @@ public class Student extends Person{
     public void setRecordIDs(String[] recordIDs) {this.recordIDs = recordIDs;}
     public void setFeeBalance(double feeBalance) {this.feeBalance = feeBalance;}
     public void setScholarship(boolean scholarship) {isScholarship = scholarship;}
+    public void setRecordCount(int recordCount) {this.recordCount = recordCount;}
 
     @Override
     public void displayInfo() {
-        System.out.println("Display Student info -----");
-        System.out.println("ID: "+getId());
-        System.out.println("Name: "+getFullName());
-        System.out.println("Date of birth: "+getDateOfBirth());
-        System.out.println("Gender: "+getGender());
-        System.out.println("Phone number: "+getPhoneNumber());
-        System.out.println("Email: "+getEmail());
-        System.out.println("Address: "+getAddress());
-        System.out.println("Natonal ID: "+getNationalID());
-        System.out.println("Age: "+getAge());
-        System.out.println("Active: "+isActiveStatus());
-        System.out.println("\n-----\nGrade Level : "+getGradeLevel());
-        System.out.println("Enrollment date: "+getEnrollmentDate());
-        System.out.println("past courses records: "+getRecordIDs());
-        System.out.println("Fee balance: "+getFeeBalance());
-        System.out.println("Scholarship: "+isScholarship());
+        super.displayInfo(); // print the Person part first
+        System.out.println("[Student details]");
+        System.out.println("Grade level : " + gradeLevel);
+        System.out.println("Enrolled on : " + enrollmentDate);
+        System.out.println("Fee balance : " + feeBalance);
+        System.out.println("Scholarship : " + isScholarship);
+        System.out.println("Subjects    : " + subjectCount + ", records: " + recordCount);
     }
 
     public void addSubject(String subject){
-        if (hasSubject(subject)){
-            System.out.println("Student already enrolled in subject");
+        if (subject.strip().isEmpty()){
+            System.out.println("Rejected: subject cannot be empty.");
             return;
         }
-        if (enrolledSubjects == null || enrolledSubjects.length==0){
-            enrolledSubjects= new String[1];
-            enrolledSubjects[0]=subject;
-        } else {
-            //initialize replacement list
-            String[] newEnrolledSubjects = new String[enrolledSubjects.length+1];
-
-            //add prev items
-            for (int i=0;i<enrolledSubjects.length;i++){
-                newEnrolledSubjects[i]=enrolledSubjects[i];
-            }
-
-            //add new item
-            newEnrolledSubjects[enrolledSubjects.length+1]=subject;
-
-            //replace old with new
-            enrolledSubjects=newEnrolledSubjects;
-
-            System.out.println("Subject added.");
+        if (subjectCount >= enrolledSubjects.length) {
+            System.out.println("Rejected: subject list is full.");
+            return;
         }
+        enrolledSubjects[subjectCount] = subject;
+        subjectCount = subjectCount + 1;
     }
 
+
     public boolean hasSubject(String subject){
-        if (enrolledSubjects == null || enrolledSubjects.length==0) return false;
-        for (String sub:enrolledSubjects) if (sub.equals(subject)) return true;
+        for (String sub:enrolledSubjects)
+            if (subject.equalsIgnoreCase(subject))
+                return true;
         return false;
+    }
+
+    public void addRecordId(String recordID){
+        if (recordID.strip().isEmpty()){
+            System.out.println("Rejected: record id cannot be empty.");
+            return;
+        }
+        if (recordCount >= recordIDs.length) {
+            System.out.println("Rejected: record list is full.");
+            return;
+        }
+        recordIDs[recordCount] = recordID;
+        recordCount = recordCount + 1;
+    }
+
+    public void addToBalance(double amount){
+        if (amount<0){
+            System.out.println("Rejected: amount to add cannot be negative.");
+            return;
+        }
+        setFeeBalance(getFeeBalance()+amount);
+    }
+
+    public void clearBalance(){
+        setFeeBalance(0);
+        System.out.println("Fee balance cleared!");
     }
 }
