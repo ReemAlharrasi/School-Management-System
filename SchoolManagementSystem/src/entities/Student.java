@@ -33,5 +33,23 @@ public class Student extends Person{
     public void setFeeBalance(double feeBalance) {this.feeBalance = feeBalance;}
     public void setScholarship(boolean scholarship) {isScholarship = scholarship;}
 
-
+    @Override
+    public void displayInfo() {
+        System.out.println("Display Student info -----");
+        System.out.println("ID: "+getId());
+        System.out.println("Name: "+getFullName());
+        System.out.println("Date of birth: "+getDateOfBirth());
+        System.out.println("Gender: "+getGender());
+        System.out.println("Phone number: "+getPhoneNumber());
+        System.out.println("Email: "+getEmail());
+        System.out.println("Address: "+getAddress());
+        System.out.println("Natonal ID: "+getNationalID());
+        System.out.println("Age: "+getAge());
+        System.out.println("Active: "+isActiveStatus());
+        System.out.println("\n-----\nGrade Level : "+getGradeLevel());
+        System.out.println("Enrollment date: "+getEnrollmentDate());
+        System.out.println("past courses records: "+getRecordIDs());
+        System.out.println("Fee balance: "+getFeeBalance());
+        System.out.println("Scholarship: "+isScholarship());
+    }
 }
