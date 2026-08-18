@@ -57,4 +57,15 @@ public class Enrollment {
     public void complete(){
         setStatus("Completed");
     }
+
+    public void transfer(String newCourseId, String newDate){
+        setCourseId(newCourseId);
+        setEnrollDate(newDate);
+        setStatus("Active");
+    }
+
+    public boolean isPast(String otherDate){
+        if (otherDate.isBlank()) return false;
+        return enrollDate.compareTo(otherDate) < 0;
+    }
 }
