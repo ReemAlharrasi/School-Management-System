@@ -54,6 +54,27 @@ public class Person {
     public void setNationalID(Integer nationalID) {this.nationalID = nationalID;}
     public void setAge(Integer age) {this.age = age;}
     public void setActiveStatus(boolean activeStatus) {this.activeStatus = activeStatus;}
-    
 
+    //methods
+    public void displayInfo(){
+        System.out.println("Display Person info -----");
+        System.out.println("ID: "+getId());
+        System.out.println("Name: "+getFullName());
+        System.out.println("Date of birth: "+getDateOfBirth());
+        System.out.println("Gender: "+getGender());
+        System.out.println("Phone number: "+getPhoneNumber());
+        System.out.println("Email: "+getEmail());
+        System.out.println("Address: "+getAddress());
+        System.out.println("Natonal ID: "+getNationalID());
+        System.out.println("Age: "+getAge());
+        System.out.println("Active: "+isActiveStatus());
+    }
+
+    public void displaySummary(){
+        System.out.println("[Person] ID: "+getId()+" Full Name: "+getFullName());
+    }
+
+    public String getFullName(){
+        return getFirstName()+" "+getLastName();
+    }
 }
