@@ -1,6 +1,10 @@
 package entities;
 
-public class Enrollment {
+import interfaces.Displayable;
+import utils.HelperUtils;
+
+// A plain data class linking a student to a course.
+public class Enrollment implements Displayable {
     private String enrollmentId;
     private String studentId;
     private String courseId;
@@ -18,9 +22,10 @@ public class Enrollment {
         setCourseId(courseId);
         setEnrollDate(enrollDate);
         setStatus(status);
-        this.reason = reason;
+        this.reason = (reason == null) ? "" : reason;
         this.isRepeat = isRepeat;
     }
+
     //getters
     public String getEnrollmentId() {return enrollmentId;}
     public String getStudentId() {return studentId;}
@@ -30,16 +35,52 @@ public class Enrollment {
     public String getReason() {return reason;}
     public boolean isRepeat() {return isRepeat;}
 
-    //setters
-    public void setEnrollmentId(String enrollmentId) {this.enrollmentId = enrollmentId;}
-    public void setStudentId(String studentId) {this.studentId = studentId;}
-    public void setCourseId(String courseId) {this.courseId = courseId;}
-    public void setEnrollDate(String enrollDate) {this.enrollDate = enrollDate;}
-    public void setStatus(String status) {this.status = status;}
-    public void setReason(String reason) {this.reason = reason;}
+    //setters (validation lives here)
+    public void setEnrollmentId(String enrollmentId) {
+        if (HelperUtils.isEmpty(enrollmentId)) {
+            System.out.println("Rejected: enrollment id cannot be empty.");
+            return;
+        }
+        this.enrollmentId = enrollmentId;
+    }
+
+    public void setStudentId(String studentId) {
+        if (HelperUtils.isEmpty(studentId)) {
+            System.out.println("Rejected: student id cannot be empty.");
+            return;
+        }
+        this.studentId = studentId;
+    }
+
+    public void setCourseId(String courseId) {
+        if (HelperUtils.isEmpty(courseId)) {
+            System.out.println("Rejected: course id cannot be empty.");
+            return;
+        }
+        this.courseId = courseId;
+    }
+
+    public void setEnrollDate(String enrollDate) {
+        if (HelperUtils.isEmpty(enrollDate)) {
+            System.out.println("Rejected: enroll date cannot be empty.");
+            return;
+        }
+        this.enrollDate = enrollDate;
+    }
+
+    public void setStatus(String status) {
+        if (!HelperUtils.isOneOf(status, ALLOWED_STATUS)) {
+            System.out.println("Rejected: status must be Active, Completed or Cancelled.");
+            return;
+        }
+        this.status = status;
+    }
+
+    public void setReason(String reason) {this.reason = (reason == null) ? "" : reason;}
     public void setRepeat(boolean repeat) {isRepeat = repeat;}
 
     //methods
+    @Override
     public void displayInfo(){
         System.out.println("----- Enrollment -----");
         System.out.println("Enrollment id: " + enrollmentId);
@@ -51,9 +92,15 @@ public class Enrollment {
         System.out.println("Repeat       : " + isRepeat);
     }
 
+    @Override
+    public void displaySummary(){
+        System.out.println(enrollmentId + " - student " + studentId + " - " + status);
+    }
+
     public void cancel(){
         setStatus("Cancelled");
     }
+
     public void complete(){
         setStatus("Completed");
     }
@@ -64,8 +111,25 @@ public class Enrollment {
         setStatus("Active");
     }
 
+    // ---------- add notes to the reason (2 overloads = method overloading) ----------
+
+    public void addNotes(String notes){
+        if (HelperUtils.isEmpty(notes)) {
+            return;
+        }
+        if (HelperUtils.isEmpty(reason)) {
+            reason = notes;
+        } else {
+            reason = reason + " | " + notes;
+        }
+    }
+
+    public void addNotes(String notes, String author){
+        addNotes("(" + author + ") " + notes);
+    }
+
     public boolean isPast(String otherDate){
-        if (otherDate.isBlank()) return false;
+        if (HelperUtils.isEmpty(otherDate) || HelperUtils.isEmpty(enrollDate)) return false;
         return enrollDate.compareTo(otherDate) < 0;
     }
 }
