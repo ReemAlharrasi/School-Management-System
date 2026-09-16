@@ -1,5 +1,8 @@
 package entities;
 
+import utils.HelperUtils;
+
+// A Teacher IS A Person, so it extends Person.
 public class Teacher extends Person{
     private String subject;
     private int experienceYears;
@@ -32,13 +35,30 @@ public class Teacher extends Person{
     }
 
     //setters
-    public void setSubject(String subject) {this.subject = subject;}
-    public void setExperienceYears(int experienceYears) {this.experienceYears = experienceYears;}
-    public void setSalary(double salary) {this.salary = salary;}
-    public void setTimeSlots(String[] timeSlots) {this.timeSlots = timeSlots;}
-    public void setSlotCount(int slotCount) {this.slotCount = slotCount;}
-    public void setAssignedClassIds(String[] assignedClassIds) {this.assignedClassIds = assignedClassIds;}
-    public void setClassCount(int classCount) {this.classCount = classCount;}
+    public void setSubject(String subject) {
+        if (HelperUtils.isEmpty(subject)) {
+            System.out.println("Rejected: subject cannot be empty.");
+            return;
+        }
+        this.subject = subject;
+    }
+
+    public void setExperienceYears(int experienceYears) {
+        if (!HelperUtils.isPositive(experienceYears)) {
+            System.out.println("Rejected: experience years cannot be negative.");
+            return;
+        }
+        this.experienceYears = experienceYears;
+    }
+
+    public void setSalary(double salary) {
+        if (!HelperUtils.isPositive(salary)) {
+            System.out.println("Rejected: salary cannot be negative.");
+            return;
+        }
+        this.salary = salary;
+    }
+
     public void setFormTeacher(boolean formTeacher) {isFormTeacher = formTeacher;}
 
     //getters
@@ -62,8 +82,13 @@ public class Teacher extends Person{
         System.out.println("Slots       : " + slotCount + ", classes: " + classCount);
     }
 
+    @Override
+    public void displaySummary() {
+        System.out.println("[Teacher] " + getId() + " - " + getFullName() + " (" + subject + ")");
+    }
+
     public void addSlot(String slot){
-        if (slot.isBlank()){
+        if (HelperUtils.isEmpty(slot)){
             System.out.println("Rejected: slot cannot be empty.");
             return;
         }
@@ -90,6 +115,7 @@ public class Teacher extends Person{
         for (int i = found; i < slotCount - 1; i++) {
             timeSlots[i] = timeSlots[i + 1];
         }
+        timeSlots[slotCount - 1] = null;
         slotCount = slotCount - 1;
     }
 
@@ -103,7 +129,7 @@ public class Teacher extends Person{
     }
 
     public void assignClass(String classId){
-        if (classId.isBlank()){
+        if (HelperUtils.isEmpty(classId)){
             System.out.println("Rejected: class id cannot be empty.");
             return;
         }
@@ -120,10 +146,23 @@ public class Teacher extends Person{
     }
 
     public void raiseSalary(double amount){
-        if (amount<0){
+        if (!HelperUtils.isPositive(amount)){
             System.out.println("Rejected: raise amount cannot be negative.");
             return;
         }
         setSalary(getSalary()+amount);
+    }
+
+    // ---------- update salary (2 overloads = method overloading) ----------
+
+    // salary only
+    public void updateSalary(double newSalary) {
+        setSalary(newSalary);
+    }
+
+    // salary with a reason
+    public void updateSalary(double newSalary, String reason) {
+        setSalary(newSalary);
+        System.out.println("Salary of " + getFullName() + " updated. Reason: " + reason);
     }
 }
