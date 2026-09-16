@@ -1,6 +1,10 @@
 package entities;
 
-public class CourseRecord {
+import interfaces.Displayable;
+import utils.HelperUtils;
+
+// A plain data class holding one student's result for a course.
+public class CourseRecord implements Displayable {
     private Integer recordId;
     private Integer studentId;
     private Integer teacherId;
@@ -10,16 +14,17 @@ public class CourseRecord {
     private String notes;
     private boolean isFinalized;
 
-    //constructor
+    private static final String ALLOWED_GRADES = "ABCDEF";
 
+    //constructor
     public CourseRecord(Integer recordId, Integer studentId, Integer teacherId, String term, char grade, String remarks, String notes, boolean isFinalized) {
-        this.recordId = recordId;
-        this.studentId = studentId;
-        this.teacherId = teacherId;
-        this.term = term;
-        this.grade = grade;
+        setRecordId(recordId);
+        setStudentId(studentId);
+        setTeacherId(teacherId);
+        setTerm(term);
+        setGrade(grade);
         this.remarks = remarks;
-        this.notes = notes;
+        this.notes = (notes == null) ? "" : notes;
         this.isFinalized = isFinalized;
     }
 
@@ -33,17 +38,53 @@ public class CourseRecord {
     public String getNotes() {return notes;}
     public boolean isFinalized() {return isFinalized;}
 
-    //setters
-    public void setRecordId(Integer recordId) {this.recordId = recordId;}
-    public void setStudentId(Integer studentId) {this.studentId = studentId;}
-    public void setTeacherId(Integer teacherId) {this.teacherId = teacherId;}
-    public void setTerm(String term) {this.term = term;}
-    public void setGrade(char grade) {this.grade = grade;}
+    //setters (validation lives here)
+    public void setRecordId(Integer recordId) {
+        if (recordId == null || recordId <= 0) {
+            System.out.println("Rejected: record id must be a positive number.");
+            return;
+        }
+        this.recordId = recordId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        if (studentId == null || studentId <= 0) {
+            System.out.println("Rejected: student id must be a positive number.");
+            return;
+        }
+        this.studentId = studentId;
+    }
+
+    public void setTeacherId(Integer teacherId) {
+        if (teacherId == null || teacherId <= 0) {
+            System.out.println("Rejected: teacher id must be a positive number.");
+            return;
+        }
+        this.teacherId = teacherId;
+    }
+
+    public void setTerm(String term) {
+        if (HelperUtils.isEmpty(term)) {
+            System.out.println("Rejected: term cannot be empty.");
+            return;
+        }
+        this.term = term;
+    }
+
+    public void setGrade(char grade) {
+        if (ALLOWED_GRADES.indexOf(Character.toUpperCase(grade)) < 0) {
+            System.out.println("Rejected: grade must be one of A B C D E F.");
+            return;
+        }
+        this.grade = Character.toUpperCase(grade);
+    }
+
     public void setRemarks(String remarks) {this.remarks = remarks;}
-    public void setNotes(String notes) {this.notes = notes;}
+    public void setNotes(String notes) {this.notes = (notes == null) ? "" : notes;}
     public void setFinalized(boolean finalized) {isFinalized = finalized;}
 
     //methods
+    @Override
     public void displayInfo(){
         System.out.println("----- Course Record -----");
         System.out.println("Record id : " + recordId);
@@ -56,19 +97,28 @@ public class CourseRecord {
         System.out.println("Finalized : " + isFinalized);
     }
 
+    @Override
+    public void displaySummary(){
+        System.out.println(recordId + " - student " + studentId + " - grade " + grade);
+    }
+
     public void appendNote(String note){
-        if (note.isBlank()) {
+        if (HelperUtils.isEmpty(note)) {
             return;
         }
-        if (getNotes().isEmpty()) {
+        if (HelperUtils.isEmpty(getNotes())) {
             setNotes(note);
         } else {
             setNotes(getNotes()+" | "+note);
         }
     }
 
+    // overload: the same note with the name of who wrote it
+    public void appendNote(String note, String author){
+        appendNote("(" + author + ") " + note);
+    }
+
     public void finalizeRecord(){
         setFinalized(true);
     }
-
 }
